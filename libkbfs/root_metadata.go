@@ -16,6 +16,7 @@ import (
 	"github.com/keybase/go-codec/codec"
 	"github.com/keybase/kbfs/kbfscodec"
 	"github.com/keybase/kbfs/kbfscrypto"
+	"github.com/keybase/kbfs/tlf"
 )
 
 // MetadataFlags bitfield.
@@ -428,7 +429,7 @@ func (md *RootMetadata) LatestKeyGeneration() KeyGen {
 }
 
 // TlfID wraps the respective method of the underlying BareRootMetadata for convenience.
-func (md *RootMetadata) TlfID() TlfID {
+func (md *RootMetadata) TlfID() tlf.TlfID {
 	return md.bareMd.TlfID()
 }
 
@@ -622,7 +623,7 @@ func (md *RootMetadata) SetLastModifyingUser(user keybase1.UID) {
 }
 
 // SetTlfID wraps the respective method of the underlying BareRootMetadata for convenience.
-func (md *RootMetadata) SetTlfID(tlf TlfID) {
+func (md *RootMetadata) SetTlfID(tlf tlf.TlfID) {
 	md.bareMd.SetTlfID(tlf)
 }
 
@@ -639,7 +640,7 @@ func (md *RootMetadata) FakeInitialRekey(crypto cryptoPure, h BareTlfHandle) err
 }
 
 // Update wraps the respective method of the underlying BareRootMetadata for convenience.
-func (md *RootMetadata) Update(id TlfID, h BareTlfHandle) error {
+func (md *RootMetadata) Update(id tlf.TlfID, h BareTlfHandle) error {
 	return md.bareMd.Update(id, h)
 }
 
@@ -1056,8 +1057,8 @@ func EncodeRootMetadataSigned(
 
 // DecodeRootMetadata deserializes a metadata block into the specified
 // versioned structure.
-func DecodeRootMetadata(
-	codec kbfscodec.Codec, tlf TlfID, ver, max MetadataVer, buf []byte) (
+func DecodeRootMetadata(codec kbfscodec.Codec, tlf tlf.TlfID,
+	ver, max MetadataVer, buf []byte) (
 	MutableBareRootMetadata, error) {
 	if ver < FirstValidMetadataVer {
 		return nil, InvalidMetadataVersionError{tlf, ver}

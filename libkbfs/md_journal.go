@@ -16,6 +16,7 @@ import (
 	"github.com/keybase/client/go/logger"
 	"github.com/keybase/kbfs/kbfscodec"
 	"github.com/keybase/kbfs/kbfscrypto"
+	"github.com/keybase/kbfs/tlf"
 
 	"golang.org/x/net/context"
 
@@ -569,7 +570,7 @@ func (j mdJournal) checkGetParams() (ImmutableBareRootMetadata, error) {
 
 func (j *mdJournal) convertToBranch(
 	ctx context.Context, signer cryptoSigner, codec kbfscodec.Codec,
-	tlfID TlfID, mdcache MDCache) (bid BranchID, err error) {
+	tlfID tlf.TlfID, mdcache MDCache) (bid BranchID, err error) {
 	if j.branchID != NullBranchID {
 		return NullBranchID, fmt.Errorf(
 			"convertToBranch called with BID=%s", j.branchID)
@@ -807,7 +808,7 @@ func (j *mdJournal) removeFlushedEntry(
 }
 
 func getMdID(ctx context.Context, mdserver MDServer, crypto cryptoPure,
-	tlfID TlfID, bid BranchID, mStatus MergeStatus,
+	tlfID tlf.TlfID, bid BranchID, mStatus MergeStatus,
 	revision MetadataRevision) (MdID, error) {
 	rmdses, err := mdserver.GetRange(
 		ctx, tlfID, bid, mStatus, revision, revision)

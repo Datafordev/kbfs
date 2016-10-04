@@ -11,6 +11,7 @@ import (
 	"github.com/keybase/client/go/libkb"
 	"github.com/keybase/client/go/protocol/keybase1"
 	"github.com/keybase/kbfs/kbfscodec"
+	"github.com/keybase/kbfs/tlf"
 	"golang.org/x/sync/errgroup"
 
 	"golang.org/x/net/context"
@@ -72,7 +73,7 @@ func isReadableOrError(
 		ctx, config, md, md.LatestKeyGeneration(), uid, username)
 }
 
-func getMDRange(ctx context.Context, config Config, id TlfID, bid BranchID,
+func getMDRange(ctx context.Context, config Config, id tlf.TlfID, bid BranchID,
 	start MetadataRevision, end MetadataRevision, mStatus MergeStatus) (
 	rmds []ImmutableRootMetadata, err error) {
 	// The range is invalid.  Don't treat as an error though; it just
@@ -161,7 +162,7 @@ func getMDRange(ctx context.Context, config Config, id TlfID, bid BranchID,
 }
 
 // getSingleMD returns an MD that is required to exist.
-func getSingleMD(ctx context.Context, config Config, id TlfID, bid BranchID,
+func getSingleMD(ctx context.Context, config Config, id tlf.TlfID, bid BranchID,
 	rev MetadataRevision, mStatus MergeStatus) (
 	ImmutableRootMetadata, error) {
 	rmds, err := getMDRange(ctx, config, id, bid, rev, rev, mStatus)
@@ -183,7 +184,7 @@ func getSingleMD(ctx context.Context, config Config, id TlfID, bid BranchID,
 //
 // TODO: Accept a parameter to express that we want copies of the MDs
 // instead of the cached versions.
-func getMergedMDUpdates(ctx context.Context, config Config, id TlfID,
+func getMergedMDUpdates(ctx context.Context, config Config, id tlf.TlfID,
 	startRev MetadataRevision) (mergedRmds []ImmutableRootMetadata, err error) {
 	// We don't yet know about any revisions yet, so there's no range
 	// to get.
@@ -265,7 +266,7 @@ func getMergedMDUpdates(ctx context.Context, config Config, id TlfID,
 //
 // TODO: Accept a parameter to express that we want copies of the MDs
 // instead of the cached versions.
-func getUnmergedMDUpdates(ctx context.Context, config Config, id TlfID,
+func getUnmergedMDUpdates(ctx context.Context, config Config, id tlf.TlfID,
 	bid BranchID, startRev MetadataRevision) (
 	currHead MetadataRevision, unmergedRmds []ImmutableRootMetadata, err error) {
 	// We don't yet know about any revisions yet, so there's no range

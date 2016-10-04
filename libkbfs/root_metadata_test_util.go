@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/keybase/kbfs/kbfscodec"
+	"github.com/keybase/kbfs/tlf"
 )
 
 // This file contains test functions related to RootMetadata that need
@@ -17,7 +18,7 @@ import (
 // NewRootMetadataSignedForTest returns a new RootMetadataSigned
 // object at the latest known version for testing.
 func NewRootMetadataSignedForTest(
-	id TlfID, h BareTlfHandle, codec kbfscodec.Codec,
+	id tlf.TlfID, h BareTlfHandle, codec kbfscodec.Codec,
 	signer cryptoSigner) (*RootMetadataSigned, error) {
 	var md BareRootMetadataV2
 	// MDv3 TODO: uncomment the below when we're ready for MDv3
