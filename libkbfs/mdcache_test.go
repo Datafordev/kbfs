@@ -114,7 +114,7 @@ func TestMdcacheReplace(t *testing.T) {
 	mockCtrl, config := mdCacheInit(t, 100)
 	defer mdCacheShutdown(mockCtrl, config)
 
-	id := FakeTlfID(1, false)
+	id := tlf.FakeTlfID(1, false)
 	h := parseTlfHandleOrBust(t, config, "alice", false)
 	h.resolvedWriters[keybase1.MakeTestUID(0)] = "test_user0"
 

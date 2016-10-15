@@ -532,7 +532,7 @@ func TestBlockJournalFlushMDRevMarker(t *testing.T) {
 	require.NoError(t, err)
 
 	blockServer := NewBlockServerMemory(newTestBlockServerLocalConfig(t))
-	tlfID := FakeTlfID(1, false)
+	tlfID := tlf.FakeTlfID(1, false)
 	bcache := NewBlockCacheStandard(0, 0)
 	reporter := NewReporterSimple(nil, 0)
 
