@@ -412,6 +412,12 @@ func (b *BlockServerRemote) ArchiveBlockReferences(ctx context.Context,
 	return err
 }
 
+// IsUnflushed implements the BlockServer interface for BlockServerRemote.
+func (b *BlockServerRemote) IsUnflushed(_ context.Context, _ TlfID, _ BlockID) (
+	bool, error) {
+	return false, nil
+}
+
 // batchDowngradeReferences archives or deletes a batch of references
 func (b *BlockServerRemote) batchDowngradeReferences(ctx context.Context,
 	tlfID TlfID, contexts map[BlockID][]BlockContext, archive bool) (

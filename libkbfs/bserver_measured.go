@@ -19,6 +19,7 @@ type BlockServerMeasured struct {
 	addBlockReferenceTimer      metrics.Timer
 	removeBlockReferencesTimer  metrics.Timer
 	archiveBlockReferencesTimer metrics.Timer
+	isUnflushedTimer            metrics.Timer
 }
 
 var _ BlockServer = BlockServerMeasured{}
@@ -31,6 +32,7 @@ func NewBlockServerMeasured(delegate BlockServer, r metrics.Registry) BlockServe
 	addBlockReferenceTimer := metrics.GetOrRegisterTimer("BlockServer.AddBlockReference", r)
 	removeBlockReferencesTimer := metrics.GetOrRegisterTimer("BlockServer.RemoveBlockReferences", r)
 	archiveBlockReferencesTimer := metrics.GetOrRegisterTimer("BlockServer.ArchiveBlockReferences", r)
+	isUnflushedTimer := metrics.GetOrRegisterTimer("BlockServer.IsUnflushed", r)
 	return BlockServerMeasured{
 		delegate:                    delegate,
 		getTimer:                    getTimer,
@@ -38,6 +40,7 @@ func NewBlockServerMeasured(delegate BlockServer, r metrics.Registry) BlockServe
 		addBlockReferenceTimer:      addBlockReferenceTimer,
 		removeBlockReferencesTimer:  removeBlockReferencesTimer,
 		archiveBlockReferencesTimer: archiveBlockReferencesTimer,
+		isUnflushedTimer:            isUnflushedTimer,
 	}
 }
 
@@ -91,6 +94,16 @@ func (b BlockServerMeasured) ArchiveBlockReferences(ctx context.Context,
 		err = b.delegate.ArchiveBlockReferences(ctx, tlfID, contexts)
 	})
 	return err
+}
+
+// IsUnflushed implements the BlockServer interface for BlockServerMeasured.
+func (b BlockServerMeasured) IsUnflushed(ctx context.Context, tlfID TlfID,
+	id BlockID) (isUnflushed bool, err error) {
+	b.isUnflushedTimer.Time(func() {
+		isUnflushed, err = b.delegate.IsUnflushed(ctx, tlfID, id)
+	})
+	return isUnflushed, err
+
 }
 
 // Shutdown implements the BlockServer interface for
