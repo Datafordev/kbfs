@@ -196,11 +196,17 @@ func (j journalMDOps) getRangeFromJournal(
 func (j journalMDOps) GetForHandle(
 	ctx context.Context, handle *TlfHandle, mStatus MergeStatus) (
 	TlfID, ImmutableRootMetadata, error) {
-	// Need to always consult the server to get the tlfID. No need
-	// to optimize this, since all subsequent lookups will be by
-	// TLF. Although if we did want to, we could store a handle ->
-	// TLF ID mapping with the journals.
-	tlfID, rmd, err := j.MDOps.GetForHandle(ctx, handle, mStatus)
+	// Need to always consult the server to get the tlfID. No need to
+	// optimize this, since all subsequent lookups will be by
+	// TLF. Although if we did want to, we could store a handle -> TLF
+	// ID mapping with the journals.  If we are looking for an
+	// unmerged head, that exists only in the journal, so check the
+	// remote server only to get the TLF ID.
+	remoteMStatus := mStatus
+	if mStatus == Unmerged {
+		remoteMStatus = Merged
+	}
+	tlfID, rmd, err := j.MDOps.GetForHandle(ctx, handle, remoteMStatus)
 	if err != nil {
 		return TlfID{}, ImmutableRootMetadata{}, err
 	}
@@ -219,6 +225,9 @@ func (j journalMDOps) GetForHandle(
 	}
 	if irmd != (ImmutableRootMetadata{}) {
 		return TlfID{}, irmd, nil
+	}
+	if remoteMStatus != mStatus {
+		return tlfID, ImmutableRootMetadata{}, nil
 	}
 
 	// Otherwise, use the server's head.
