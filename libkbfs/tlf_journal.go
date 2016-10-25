@@ -846,6 +846,11 @@ func (j *tlfJournal) flushOneMDOp(
 			rmds.MD.RevisionNumber())
 	}
 
+	err = j.blockJournal.onMDFlush()
+	if err != nil {
+		return false, err
+	}
+
 	err = j.removeFlushedMDEntry(ctx, mdID, rmds)
 	if err != nil {
 		return false, err
@@ -1482,6 +1487,10 @@ func (j *tlfJournal) doResolveBranch(ctx context.Context,
 
 	// Then go through and mark blocks and md rev markers for ignoring.
 	err = j.blockJournal.ignoreBlocksAndMDRevMarkers(ctx, blocksToDelete)
+	if err != nil {
+		return MdID{}, false, err
+	}
+	err = j.blockJournal.saveBlocksUntilNextMDFlush()
 	if err != nil {
 		return MdID{}, false, err
 	}
