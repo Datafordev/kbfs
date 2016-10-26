@@ -600,6 +600,12 @@ type syncOp struct {
 	OpCommon
 	File   blockUpdate  `codec:"f"`
 	Writes []WriteRange `codec:"w"`
+
+	// If true, this says that if there is a conflict involving this
+	// op, we should keep the unmerged name rather than construct a
+	// conflict name (probably because the new name already
+	// diverges from the name in the other branch).
+	keepUnmergedTailName bool
 }
 
 func newSyncOp(oldFile BlockPointer) (*syncOp, error) {
@@ -672,12 +678,17 @@ func (so *syncOp) checkConflict(renamer ConflictRenamer, mergedOp op,
 		// Any sync on the same file is a conflict.  (TODO: add
 		// type-specific intelligent conflict resolvers for file
 		// contents?)
+		toName := renamer.ConflictRename(so, mergedOp.getFinalPath().tailName())
+		unmergedParentMostRecent := so.getFinalPath().parentPath().tailPointer()
+		if so.keepUnmergedTailName {
+			toName = so.getFinalPath().tailName()
+			unmergedParentMostRecent = BlockPointer{}
+		}
+
 		return &renameUnmergedAction{
 			fromName: so.getFinalPath().tailName(),
-			toName: renamer.ConflictRename(so, mergedOp.getFinalPath().
-				tailName()),
-			unmergedParentMostRecent: so.getFinalPath().parentPath().
-				tailPointer(),
+			toName:   toName,
+			unmergedParentMostRecent: unmergedParentMostRecent,
 			mergedParentMostRecent: mergedOp.getFinalPath().parentPath().
 				tailPointer(),
 		}, nil
@@ -841,6 +852,12 @@ type setAttrOp struct {
 	Dir  blockUpdate  `codec:"d"`
 	Attr attrChange   `codec:"a"`
 	File BlockPointer `codec:"f"`
+
+	// If true, this says that if there is a conflict involving this
+	// op, we should keep the unmerged name rather than construct a
+	// conflict name (probably because the new name already
+	// diverges from the name in the other branch).
+	keepUnmergedTailName bool
 }
 
 func newSetAttrOp(name string, oldDir BlockPointer,
@@ -905,16 +922,23 @@ func (sao *setAttrOp) checkConflict(renamer ConflictRenamer, mergedOp op,
 				causedByAttr = sao.Attr
 			}
 
+			toName :=
+				renamer.ConflictRename(sao, mergedOp.getFinalPath().tailName())
+			unmergedParentMostRecent :=
+				sao.getFinalPath().parentPath().tailPointer()
+			if sao.keepUnmergedTailName {
+				toName = sao.getFinalPath().tailName()
+				unmergedParentMostRecent = BlockPointer{}
+			}
+
 			// A set attr for the same attribute on the same file is a
 			// conflict.
 			return &renameUnmergedAction{
-				fromName: sao.getFinalPath().tailName(),
-				toName: renamer.ConflictRename(
-					sao, mergedOp.getFinalPath().tailName()),
-				symPath:      symPath,
-				causedByAttr: causedByAttr,
-				unmergedParentMostRecent: sao.getFinalPath().parentPath().
-					tailPointer(),
+				fromName:                 sao.getFinalPath().tailName(),
+				toName:                   toName,
+				symPath:                  symPath,
+				causedByAttr:             causedByAttr,
+				unmergedParentMostRecent: unmergedParentMostRecent,
 				mergedParentMostRecent: mergedOp.getFinalPath().parentPath().
 					tailPointer(),
 			}, nil
