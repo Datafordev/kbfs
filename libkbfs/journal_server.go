@@ -569,11 +569,11 @@ func (j *JournalServer) mdOps() journalMDOps {
 // Status returns a JournalServerStatus object suitable for
 // diagnostics.  It also returns a list of TLF IDs which have journals
 // enabled.
-func (j *JournalServer) Status() (JournalServerStatus, []TlfID) {
+func (j *JournalServer) Status() (JournalServerStatus, []tlf.TlfID) {
 	j.lock.RLock()
 	defer j.lock.RUnlock()
 	var unflushedBytes int64
-	tlfIDs := make([]TlfID, 0, len(j.tlfJournals))
+	tlfIDs := make([]tlf.TlfID, 0, len(j.tlfJournals))
 	for _, tlfJournal := range j.tlfJournals {
 		unflushedBytes += tlfJournal.getUnflushedBytes()
 		tlfIDs = append(tlfIDs, tlfJournal.tlfID)

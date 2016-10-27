@@ -132,7 +132,7 @@ type mdJournal struct {
 	codec  kbfscodec.Codec
 	crypto cryptoPure
 	clock  Clock
-	tlfID  TlfID
+	tlfID  tlf.TlfID
 	mdVer  MetadataVer
 	dir    string
 
@@ -154,7 +154,7 @@ type mdJournal struct {
 
 func makeMDJournalWithIDJournal(
 	uid keybase1.UID, key kbfscrypto.VerifyingKey, codec kbfscodec.Codec,
-	crypto cryptoPure, clock Clock, tlfID TlfID,
+	crypto cryptoPure, clock Clock, tlfID tlf.TlfID,
 	mdVer MetadataVer, dir string, idJournal mdIDJournal,
 	log logger.Logger) (*mdJournal, error) {
 	if uid == keybase1.UID("") {

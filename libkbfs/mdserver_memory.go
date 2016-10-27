@@ -32,12 +32,12 @@ type mdBranchKey struct {
 }
 
 type mdExtraWriterKey struct {
-	tlfID          TlfID
+	tlfID          tlf.TlfID
 	writerBundleID TLFWriterKeyBundleID
 }
 
 type mdExtraReaderKey struct {
-	tlfID          TlfID
+	tlfID          tlf.TlfID
 	readerBundleID TLFReaderKeyBundleID
 }
 
@@ -736,7 +736,7 @@ func (md *MDServerMemory) OffsetFromServerTime() (time.Duration, bool) {
 }
 
 func (md *MDServerMemory) getExtraMetadata(
-	tlfID TlfID, wkbID TLFWriterKeyBundleID, rkbID TLFReaderKeyBundleID) (
+	tlfID tlf.TlfID, wkbID TLFWriterKeyBundleID, rkbID TLFReaderKeyBundleID) (
 	ExtraMetadata, error) {
 	wkb, rkb, err := md.getKeyBundles(tlfID, wkbID, rkbID)
 	if err != nil {
@@ -782,7 +782,7 @@ func (md *MDServerMemory) putExtraMetadataLocked(rmds *RootMetadataSigned,
 }
 
 func (md *MDServerMemory) getKeyBundles(
-	tlfID TlfID, wkbID TLFWriterKeyBundleID, rkbID TLFReaderKeyBundleID) (
+	tlfID tlf.TlfID, wkbID TLFWriterKeyBundleID, rkbID TLFReaderKeyBundleID) (
 	*TLFWriterKeyBundleV3, *TLFReaderKeyBundleV3, error) {
 	if (wkbID == TLFWriterKeyBundleID{}) !=
 		(rkbID == TLFReaderKeyBundleID{}) {
@@ -811,7 +811,7 @@ func (md *MDServerMemory) getKeyBundles(
 
 // GetKeyBundles implements the MDServer interface for MDServerMemory.
 func (md *MDServerMemory) GetKeyBundles(_ context.Context,
-	tlfID TlfID, wkbID TLFWriterKeyBundleID, rkbID TLFReaderKeyBundleID) (
+	tlfID tlf.TlfID, wkbID TLFWriterKeyBundleID, rkbID TLFReaderKeyBundleID) (
 	*TLFWriterKeyBundleV3, *TLFReaderKeyBundleV3, error) {
 	return md.getKeyBundles(tlfID, wkbID, rkbID)
 }

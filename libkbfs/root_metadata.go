@@ -1086,7 +1086,7 @@ func DecodeRootMetadata(codec kbfscodec.Codec, tlf tlf.TlfID,
 // DecodeRootMetadataSigned deserializes a metadata block into the
 // specified versioned structure.
 func DecodeRootMetadataSigned(
-	codec kbfscodec.Codec, tlf TlfID, ver, max MetadataVer, buf []byte,
+	codec kbfscodec.Codec, tlf tlf.TlfID, ver, max MetadataVer, buf []byte,
 	untrustedServerTimestamp time.Time) (
 	*RootMetadataSigned, error) {
 	if ver < FirstValidMetadataVer {

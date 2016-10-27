@@ -1110,7 +1110,7 @@ type MDServer interface {
 	OffsetFromServerTime() (time.Duration, bool)
 
 	// GetKeyBundles returns the key bundles for the given key bundle IDs.
-	GetKeyBundles(ctx context.Context, tlfID TlfID,
+	GetKeyBundles(ctx context.Context, tlfID tlf.TlfID,
 		wkbID TLFWriterKeyBundleID, rkbID TLFReaderKeyBundleID) (
 		*TLFWriterKeyBundleV3, *TLFReaderKeyBundleV3, error)
 }
@@ -1760,11 +1760,11 @@ type MutableBareRootMetadata interface {
 // KeyBundleCache is an interface to a key bundle cache for use with v3 metadata.
 type KeyBundleCache interface {
 	// GetTLFReaderKeyBundle returns the TLFReaderKeyBundleV2 for the given TLFReaderKeyBundleID.
-	GetTLFReaderKeyBundle(TlfID, TLFReaderKeyBundleID) (*TLFReaderKeyBundleV3, error)
+	GetTLFReaderKeyBundle(tlf.TlfID, TLFReaderKeyBundleID) (*TLFReaderKeyBundleV3, error)
 	// GetTLFWriterKeyBundle returns the TLFWriterKeyBundleV3 for the given TLFWriterKeyBundleID.
-	GetTLFWriterKeyBundle(TlfID, TLFWriterKeyBundleID) (*TLFWriterKeyBundleV3, error)
+	GetTLFWriterKeyBundle(tlf.TlfID, TLFWriterKeyBundleID) (*TLFWriterKeyBundleV3, error)
 	// PutTLFReaderKeyBundle stores the given TLFReaderKeyBundleV3.
-	PutTLFReaderKeyBundle(TlfID, TLFReaderKeyBundleID, *TLFReaderKeyBundleV3)
+	PutTLFReaderKeyBundle(tlf.TlfID, TLFReaderKeyBundleID, *TLFReaderKeyBundleV3)
 	// PutTLFWriterKeyBundle stores the given TLFWriterKeyBundleV3.
-	PutTLFWriterKeyBundle(TlfID, TLFWriterKeyBundleID, *TLFWriterKeyBundleV3)
+	PutTLFWriterKeyBundle(tlf.TlfID, TLFWriterKeyBundleID, *TLFWriterKeyBundleV3)
 }

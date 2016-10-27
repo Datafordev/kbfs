@@ -48,7 +48,7 @@ func WaitForTLFJournal(ctx context.Context, config Config, tlfID tlf.TlfID,
 }
 
 func fillInJournalStatusUnflushedPaths(ctx context.Context, config Config,
-	jStatus *JournalServerStatus, tlfIDs []TlfID) error {
+	jStatus *JournalServerStatus, tlfIDs []tlf.TlfID) error {
 	if len(tlfIDs) == 0 {
 		// Nothing to do.
 		return nil
@@ -56,7 +56,7 @@ func fillInJournalStatusUnflushedPaths(ctx context.Context, config Config,
 
 	// Get the folder statuses in parallel.
 	eg, groupCtx := errgroup.WithContext(ctx)
-	statusesToFetch := make(chan TlfID, len(tlfIDs))
+	statusesToFetch := make(chan tlf.TlfID, len(tlfIDs))
 	unflushedPaths := make(chan []string, len(tlfIDs))
 	unflushedBytes := make(chan int64, len(tlfIDs))
 	errIncomplete := errors.New("Incomplete status")
