@@ -417,7 +417,7 @@ func TestJournalServerEnableAuto(t *testing.T) {
 
 	ctx := context.Background()
 
-	tlfID := FakeTlfID(2, false)
+	tlfID := tlf.FakeTlfID(2, false)
 	err := jServer.EnableAuto(ctx)
 	require.NoError(t, err)
 

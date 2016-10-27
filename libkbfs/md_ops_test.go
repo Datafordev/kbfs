@@ -510,7 +510,7 @@ func TestMDOpsGetFailIdCheck(t *testing.T) {
 func makeRMDSRange(t *testing.T, config Config,
 	start MetadataRevision, count int, prevID MdID) (
 	rmdses []*RootMetadataSigned, extras []ExtraMetadata) {
-	id := FakeTlfID(1, false)
+	id := tlf.FakeTlfID(1, false)
 	h := parseTlfHandleOrBust(t, config, "alice,bob", false)
 	for i := 0; i < count; i++ {
 		var brmd BareRootMetadataV2

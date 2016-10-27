@@ -112,7 +112,7 @@ func newRootMetadataOrBust(
 }
 
 func newRootMetadataV3OrBust(
-	t *testing.T, tlfID TlfID, h *TlfHandle) *RootMetadata {
+	t *testing.T, tlfID tlf.TlfID, h *TlfHandle) *RootMetadata {
 	rmd := &RootMetadata{bareMd: &BareRootMetadataV3{}}
 	err := rmd.Update(tlfID, h.ToBareHandleOrBust())
 	require.NoError(t, err)

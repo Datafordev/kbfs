@@ -2876,7 +2876,7 @@ func (_mr *_MockMDServerRecorder) OffsetFromServerTime() *gomock.Call {
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "OffsetFromServerTime")
 }
 
-func (_m *MockMDServer) GetKeyBundles(ctx context.Context, tlfID TlfID, wkbID TLFWriterKeyBundleID, rkbID TLFReaderKeyBundleID) (*TLFWriterKeyBundleV3, *TLFReaderKeyBundleV3, error) {
+func (_m *MockMDServer) GetKeyBundles(ctx context.Context, tlfID tlf.TlfID, wkbID TLFWriterKeyBundleID, rkbID TLFReaderKeyBundleID) (*TLFWriterKeyBundleV3, *TLFReaderKeyBundleV3, error) {
 	ret := _m.ctrl.Call(_m, "GetKeyBundles", ctx, tlfID, wkbID, rkbID)
 	ret0, _ := ret[0].(*TLFWriterKeyBundleV3)
 	ret1, _ := ret[1].(*TLFReaderKeyBundleV3)
@@ -3062,7 +3062,7 @@ func (_mr *_MockmdServerLocalRecorder) OffsetFromServerTime() *gomock.Call {
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "OffsetFromServerTime")
 }
 
-func (_m *MockmdServerLocal) GetKeyBundles(ctx context.Context, tlfID TlfID, wkbID TLFWriterKeyBundleID, rkbID TLFReaderKeyBundleID) (*TLFWriterKeyBundleV3, *TLFReaderKeyBundleV3, error) {
+func (_m *MockmdServerLocal) GetKeyBundles(ctx context.Context, tlfID tlf.TlfID, wkbID TLFWriterKeyBundleID, rkbID TLFReaderKeyBundleID) (*TLFWriterKeyBundleV3, *TLFReaderKeyBundleV3, error) {
 	ret := _m.ctrl.Call(_m, "GetKeyBundles", ctx, tlfID, wkbID, rkbID)
 	ret0, _ := ret[0].(*TLFWriterKeyBundleV3)
 	ret1, _ := ret[1].(*TLFReaderKeyBundleV3)
@@ -5617,7 +5617,7 @@ func (_m *MockKeyBundleCache) EXPECT() *_MockKeyBundleCacheRecorder {
 	return _m.recorder
 }
 
-func (_m *MockKeyBundleCache) GetTLFReaderKeyBundle(_param0 TlfID, _param1 TLFReaderKeyBundleID) (*TLFReaderKeyBundleV3, error) {
+func (_m *MockKeyBundleCache) GetTLFReaderKeyBundle(_param0 tlf.TlfID, _param1 TLFReaderKeyBundleID) (*TLFReaderKeyBundleV3, error) {
 	ret := _m.ctrl.Call(_m, "GetTLFReaderKeyBundle", _param0, _param1)
 	ret0, _ := ret[0].(*TLFReaderKeyBundleV3)
 	ret1, _ := ret[1].(error)
@@ -5628,7 +5628,7 @@ func (_mr *_MockKeyBundleCacheRecorder) GetTLFReaderKeyBundle(arg0, arg1 interfa
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "GetTLFReaderKeyBundle", arg0, arg1)
 }
 
-func (_m *MockKeyBundleCache) GetTLFWriterKeyBundle(_param0 TlfID, _param1 TLFWriterKeyBundleID) (*TLFWriterKeyBundleV3, error) {
+func (_m *MockKeyBundleCache) GetTLFWriterKeyBundle(_param0 tlf.TlfID, _param1 TLFWriterKeyBundleID) (*TLFWriterKeyBundleV3, error) {
 	ret := _m.ctrl.Call(_m, "GetTLFWriterKeyBundle", _param0, _param1)
 	ret0, _ := ret[0].(*TLFWriterKeyBundleV3)
 	ret1, _ := ret[1].(error)
@@ -5639,7 +5639,7 @@ func (_mr *_MockKeyBundleCacheRecorder) GetTLFWriterKeyBundle(arg0, arg1 interfa
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "GetTLFWriterKeyBundle", arg0, arg1)
 }
 
-func (_m *MockKeyBundleCache) PutTLFReaderKeyBundle(_param0 TlfID, _param1 TLFReaderKeyBundleID, _param2 *TLFReaderKeyBundleV3) {
+func (_m *MockKeyBundleCache) PutTLFReaderKeyBundle(_param0 tlf.TlfID, _param1 TLFReaderKeyBundleID, _param2 *TLFReaderKeyBundleV3) {
 	_m.ctrl.Call(_m, "PutTLFReaderKeyBundle", _param0, _param1, _param2)
 }
 
@@ -5647,7 +5647,7 @@ func (_mr *_MockKeyBundleCacheRecorder) PutTLFReaderKeyBundle(arg0, arg1, arg2 i
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "PutTLFReaderKeyBundle", arg0, arg1, arg2)
 }
 
-func (_m *MockKeyBundleCache) PutTLFWriterKeyBundle(_param0 TlfID, _param1 TLFWriterKeyBundleID, _param2 *TLFWriterKeyBundleV3) {
+func (_m *MockKeyBundleCache) PutTLFWriterKeyBundle(_param0 tlf.TlfID, _param1 TLFWriterKeyBundleID, _param2 *TLFWriterKeyBundleV3) {
 	_m.ctrl.Call(_m, "PutTLFWriterKeyBundle", _param0, _param1, _param2)
 }
 

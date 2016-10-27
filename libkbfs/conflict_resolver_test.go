@@ -62,7 +62,7 @@ func crMakeFakeRMD(rev MetadataRevision, bid BranchID) ImmutableRootMetadata {
 	return MakeImmutableRootMetadata(&RootMetadata{
 		bareMd: &BareRootMetadataV2{
 			WriterMetadataV2: WriterMetadataV2{
-				ID:     FakeTlfID(0x1, false),
+				ID:     tlf.FakeTlfID(0x1, false),
 				WFlags: writerFlags,
 				BID:    bid,
 			},
