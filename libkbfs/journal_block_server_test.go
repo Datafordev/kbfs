@@ -112,66 +112,6 @@ func TestJournalBlockServerPutGetAddReference(t *testing.T) {
 	require.Equal(t, serverHalf, key)
 }
 
-func TestJournalBlockServerRemoveBlockReferences(t *testing.T) {
-	tempdir, config, jServer := setupJournalBlockServerTest(t)
-	defer teardownJournalBlockServerTest(t, tempdir, config)
-
-	// Use a shutdown-only BlockServer so that it errors if the
-	// journal tries to access it.
-	//
-	// TODO: Remove this once we merge live counts with the
-	// server.
-	jServer.delegateBlockServer = shutdownOnlyBlockServer{}
-
-	ctx := context.Background()
-
-	tlfID := tlf.FakeTlfID(2, false)
-	err := jServer.Enable(ctx, tlfID, TLFJournalBackgroundWorkPaused)
-	require.NoError(t, err)
-
-	blockServer := config.BlockServer()
-	crypto := config.Crypto()
-
-	uid1 := keybase1.MakeTestUID(1)
-	bCtx := BlockContext{uid1, "", ZeroBlockRefNonce}
-	data := []byte{1, 2, 3, 4}
-	bID, err := crypto.MakePermanentBlockID(data)
-	require.NoError(t, err)
-
-	// Put a block.
-	serverHalf, err := crypto.MakeRandomBlockCryptKeyServerHalf()
-	require.NoError(t, err)
-	err = blockServer.Put(ctx, tlfID, bID, bCtx, data, serverHalf)
-	require.NoError(t, err)
-
-	// Add some references.
-
-	uid2 := keybase1.MakeTestUID(2)
-	nonce, err := crypto.MakeBlockRefNonce()
-	require.NoError(t, err)
-	bCtx2 := BlockContext{uid1, uid2, nonce}
-	err = blockServer.AddBlockReference(ctx, tlfID, bID, bCtx2)
-
-	require.NoError(t, err)
-	nonce2, err := crypto.MakeBlockRefNonce()
-	require.NoError(t, err)
-	bCtx3 := BlockContext{uid1, uid2, nonce2}
-	err = blockServer.AddBlockReference(ctx, tlfID, bID, bCtx3)
-	require.NoError(t, err)
-
-	// Remove the references, including a non-existent one, but
-	// leave one.
-	nonce3, err := crypto.MakeBlockRefNonce()
-	require.NoError(t, err)
-	bCtx4 := BlockContext{uid1, uid2, nonce3}
-	liveCounts, err := blockServer.RemoveBlockReferences(
-		ctx, tlfID, map[BlockID][]BlockContext{
-			bID: {bCtx, bCtx2, bCtx4},
-		})
-	require.NoError(t, err)
-	require.Equal(t, map[BlockID]int{bID: 1}, liveCounts)
-}
-
 func TestJournalBlockServerArchiveBlockReferences(t *testing.T) {
 	tempdir, config, jServer := setupJournalBlockServerTest(t)
 	defer teardownJournalBlockServerTest(t, tempdir, config)
