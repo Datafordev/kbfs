@@ -159,7 +159,7 @@ func testCRChainsFillInWriter(t *testing.T, rmds []*RootMetadata) (
 	chainMDs := make([]chainMetadata, len(rmds))
 	for i, rmd := range rmds {
 		rmd.SetLastModifyingWriter(uid)
-		rmd.SetTlfID(tlf.FakeTlfID(1, false))
+		rmd.SetTlfID(tlf.FakeID(1, false))
 		chainMDs[i] = rootMetadataWithKeyAndTimestamp{
 			rmd, key, time.Unix(0, 0),
 		}

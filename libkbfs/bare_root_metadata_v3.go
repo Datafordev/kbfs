@@ -36,7 +36,7 @@ type WriterMetadataV3 struct {
 	LatestKeyGen KeyGen `codec:"lkg"`
 
 	// The directory ID, signed over to make verification easier
-	ID tlf.TlfID
+	ID tlf.ID
 	// The branch ID, currently only set if this is in unmerged per-device history.
 	BID BranchID
 	// Flags
@@ -166,7 +166,7 @@ func getAnyKeyBundlesV3(extra ExtraMetadata) (
 }
 
 // TlfID implements the BareRootMetadata interface for BareRootMetadataV3.
-func (md *BareRootMetadataV3) TlfID() tlf.TlfID {
+func (md *BareRootMetadataV3) TlfID() tlf.ID {
 	return md.WriterMetadata.ID
 }
 
@@ -297,7 +297,7 @@ func (md *BareRootMetadataV3) IsReader(
 }
 
 // Update implements the MutableBareRootMetadata interface for BareRootMetadataV3.
-func (md *BareRootMetadataV3) Update(id tlf.TlfID, h BareTlfHandle) error {
+func (md *BareRootMetadataV3) Update(id tlf.ID, h BareTlfHandle) error {
 	if id.IsPublic() != h.IsPublic() {
 		return errors.New("TlfID and TlfHandle disagree on public status")
 	}
@@ -900,7 +900,7 @@ func (md *BareRootMetadataV3) SetWriters(writers []keybase1.UID) {
 }
 
 // SetTlfID implements the MutableBareRootMetadata interface for BareRootMetadataV3.
-func (md *BareRootMetadataV3) SetTlfID(tlf tlf.TlfID) {
+func (md *BareRootMetadataV3) SetTlfID(tlf tlf.ID) {
 	md.WriterMetadata.ID = tlf
 }
 

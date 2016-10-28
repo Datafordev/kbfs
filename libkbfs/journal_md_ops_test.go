@@ -60,7 +60,7 @@ func teardownJournalMDOpsTest(t *testing.T, tempdir string, config Config) {
 }
 
 func makeMDForJournalMDOpsTest(
-	t *testing.T, config Config, tlfID tlf.TlfID, h *TlfHandle,
+	t *testing.T, config Config, tlfID tlf.ID, h *TlfHandle,
 	revision MetadataRevision) *RootMetadata {
 	rmd := NewRootMetadata()
 	bh, err := h.ToBareHandle()

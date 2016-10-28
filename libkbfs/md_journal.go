@@ -132,7 +132,7 @@ type mdJournal struct {
 	codec  kbfscodec.Codec
 	crypto cryptoPure
 	clock  Clock
-	tlfID  tlf.TlfID
+	tlfID  tlf.ID
 	mdVer  MetadataVer
 	dir    string
 
@@ -154,7 +154,7 @@ type mdJournal struct {
 
 func makeMDJournalWithIDJournal(
 	uid keybase1.UID, key kbfscrypto.VerifyingKey, codec kbfscodec.Codec,
-	crypto cryptoPure, clock Clock, tlfID tlf.TlfID,
+	crypto cryptoPure, clock Clock, tlfID tlf.ID,
 	mdVer MetadataVer, dir string, idJournal mdIDJournal,
 	log logger.Logger) (*mdJournal, error) {
 	if uid == keybase1.UID("") {
@@ -570,7 +570,7 @@ func (j mdJournal) checkGetParams() (ImmutableBareRootMetadata, error) {
 
 func (j *mdJournal) convertToBranch(
 	ctx context.Context, signer cryptoSigner, codec kbfscodec.Codec,
-	tlfID tlf.TlfID, mdcache MDCache) (bid BranchID, err error) {
+	tlfID tlf.ID, mdcache MDCache) (bid BranchID, err error) {
 	if j.branchID != NullBranchID {
 		return NullBranchID, fmt.Errorf(
 			"convertToBranch called with BID=%s", j.branchID)
@@ -808,7 +808,7 @@ func (j *mdJournal) removeFlushedEntry(
 }
 
 func getMdID(ctx context.Context, mdserver MDServer, crypto cryptoPure,
-	tlfID tlf.TlfID, bid BranchID, mStatus MergeStatus,
+	tlfID tlf.ID, bid BranchID, mStatus MergeStatus,
 	revision MetadataRevision) (MdID, error) {
 	rmdses, err := mdserver.GetRange(
 		ctx, tlfID, bid, mStatus, revision, revision)

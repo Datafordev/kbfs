@@ -429,7 +429,7 @@ func (md *RootMetadata) LatestKeyGeneration() KeyGen {
 }
 
 // TlfID wraps the respective method of the underlying BareRootMetadata for convenience.
-func (md *RootMetadata) TlfID() tlf.TlfID {
+func (md *RootMetadata) TlfID() tlf.ID {
 	return md.bareMd.TlfID()
 }
 
@@ -623,7 +623,7 @@ func (md *RootMetadata) SetLastModifyingUser(user keybase1.UID) {
 }
 
 // SetTlfID wraps the respective method of the underlying BareRootMetadata for convenience.
-func (md *RootMetadata) SetTlfID(tlf tlf.TlfID) {
+func (md *RootMetadata) SetTlfID(tlf tlf.ID) {
 	md.bareMd.SetTlfID(tlf)
 }
 
@@ -640,7 +640,7 @@ func (md *RootMetadata) FakeInitialRekey(crypto cryptoPure, h BareTlfHandle) err
 }
 
 // Update wraps the respective method of the underlying BareRootMetadata for convenience.
-func (md *RootMetadata) Update(id tlf.TlfID, h BareTlfHandle) error {
+func (md *RootMetadata) Update(id tlf.ID, h BareTlfHandle) error {
 	return md.bareMd.Update(id, h)
 }
 
@@ -1057,7 +1057,7 @@ func EncodeRootMetadataSigned(
 
 // DecodeRootMetadata deserializes a metadata block into the specified
 // versioned structure.
-func DecodeRootMetadata(codec kbfscodec.Codec, tlf tlf.TlfID,
+func DecodeRootMetadata(codec kbfscodec.Codec, tlf tlf.ID,
 	ver, max MetadataVer, buf []byte) (
 	MutableBareRootMetadata, error) {
 	if ver < FirstValidMetadataVer {
@@ -1086,7 +1086,7 @@ func DecodeRootMetadata(codec kbfscodec.Codec, tlf tlf.TlfID,
 // DecodeRootMetadataSigned deserializes a metadata block into the
 // specified versioned structure.
 func DecodeRootMetadataSigned(
-	codec kbfscodec.Codec, tlf tlf.TlfID, ver, max MetadataVer, buf []byte,
+	codec kbfscodec.Codec, tlf tlf.ID, ver, max MetadataVer, buf []byte,
 	untrustedServerTimestamp time.Time) (
 	*RootMetadataSigned, error) {
 	if ver < FirstValidMetadataVer {

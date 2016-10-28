@@ -33,7 +33,7 @@ func mdCacheShutdown(mockCtrl *gomock.Controller, config *ConfigMock) {
 	mockCtrl.Finish()
 }
 
-func testMdcachePut(t *testing.T, tlf tlf.TlfID, rev MetadataRevision,
+func testMdcachePut(t *testing.T, tlf tlf.ID, rev MetadataRevision,
 	mStatus MergeStatus, bid BranchID, h *TlfHandle, config *ConfigMock) {
 	key, err := config.KBPKI().GetCurrentVerifyingKey(context.Background())
 	if err != nil {
@@ -75,7 +75,7 @@ func TestMdcachePut(t *testing.T) {
 	mockCtrl, config := mdCacheInit(t, 100)
 	defer mdCacheShutdown(mockCtrl, config)
 
-	id := tlf.FakeTlfID(1, false)
+	id := tlf.FakeID(1, false)
 	h := parseTlfHandleOrBust(t, config, "alice", false)
 	h.resolvedWriters[keybase1.MakeTestUID(0)] = "test_user0"
 
@@ -86,13 +86,13 @@ func TestMdcachePutPastCapacity(t *testing.T) {
 	mockCtrl, config := mdCacheInit(t, 2)
 	defer mdCacheShutdown(mockCtrl, config)
 
-	id0 := tlf.FakeTlfID(1, false)
+	id0 := tlf.FakeID(1, false)
 	h0 := parseTlfHandleOrBust(t, config, "alice", false)
 
-	id1 := tlf.FakeTlfID(2, false)
+	id1 := tlf.FakeID(2, false)
 	h1 := parseTlfHandleOrBust(t, config, "alice,bob", false)
 
-	id2 := tlf.FakeTlfID(3, false)
+	id2 := tlf.FakeID(3, false)
 	h2 := parseTlfHandleOrBust(t, config, "alice,charlie", false)
 
 	testMdcachePut(t, id0, 0, Merged, NullBranchID, h0, config)
@@ -114,7 +114,7 @@ func TestMdcacheReplace(t *testing.T) {
 	mockCtrl, config := mdCacheInit(t, 100)
 	defer mdCacheShutdown(mockCtrl, config)
 
-	id := tlf.FakeTlfID(1, false)
+	id := tlf.FakeID(1, false)
 	h := parseTlfHandleOrBust(t, config, "alice", false)
 	h.resolvedWriters[keybase1.MakeTestUID(0)] = "test_user0"
 

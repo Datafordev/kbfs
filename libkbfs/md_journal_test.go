@@ -45,14 +45,14 @@ func getMDJournalLength(t *testing.T, j *mdJournal) int {
 }
 
 func setupMDJournalTest(t *testing.T) (
-	codec kbfscodec.Codec, crypto CryptoCommon, tlfID tlf.TlfID,
+	codec kbfscodec.Codec, crypto CryptoCommon, tlfID tlf.ID,
 	signer cryptoSigner, ekg singleEncryptionKeyGetter,
 	bsplit BlockSplitter, tempdir string, j *mdJournal) {
 	codec = kbfscodec.NewMsgpack()
 	crypto = MakeCryptoCommon(codec)
 
 	uid := keybase1.MakeTestUID(1)
-	tlfID = tlf.FakeTlfID(1, false)
+	tlfID = tlf.FakeID(1, false)
 
 	signingKey := MakeFakeSigningKeyOrBust("fake seed")
 	signer = kbfscrypto.SigningKeySigner{Key: signingKey}
@@ -88,7 +88,7 @@ func teardownMDJournalTest(t *testing.T, tempdir string) {
 	assert.NoError(t, err)
 }
 
-func makeMDForTest(t *testing.T, tlfID tlf.TlfID, revision MetadataRevision,
+func makeMDForTest(t *testing.T, tlfID tlf.ID, revision MetadataRevision,
 	uid keybase1.UID, verifyingKey kbfscrypto.VerifyingKey,
 	prevRoot MdID) *RootMetadata {
 	nug := testNormalizedUsernameGetter{
@@ -115,7 +115,7 @@ func makeMDForTest(t *testing.T, tlfID tlf.TlfID, revision MetadataRevision,
 	return md
 }
 
-func putMDRange(t *testing.T, tlfID tlf.TlfID, signer cryptoSigner,
+func putMDRange(t *testing.T, tlfID tlf.ID, signer cryptoSigner,
 	ekg singleEncryptionKeyGetter, bsplit BlockSplitter,
 	firstRevision MetadataRevision, firstPrevRoot MdID, mdCount int,
 	j *mdJournal) MdID {
