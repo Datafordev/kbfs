@@ -502,7 +502,7 @@ func (m *stallingMDOps) PruneBranch(
 }
 
 func (m *stallingMDOps) ResolveBranch(
-	ctx context.Context, id TlfID, bid BranchID, blocksToDelete []BlockID,
+	ctx context.Context, id tlf.ID, bid BranchID, blocksToDelete []BlockID,
 	rmd *RootMetadata) (mdID MdID, err error) {
 	m.maybeStall(ctx, StallableMDResolveBranch)
 	err = runWithContextCheck(ctx, func(ctx context.Context) error {

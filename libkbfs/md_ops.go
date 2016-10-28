@@ -597,7 +597,7 @@ func (md *MDOpsStandard) PruneBranch(
 
 // ResolveBranch implements the MDOps interface for MDOpsStandard.
 func (md *MDOpsStandard) ResolveBranch(
-	ctx context.Context, id TlfID, bid BranchID,
+	ctx context.Context, id tlf.ID, bid BranchID,
 	blocksToDelete []BlockID, rmd *RootMetadata) (MdID, error) {
 	return MdID{}, errors.New("ResolveBranch not supported by MDOpsStandard")
 }

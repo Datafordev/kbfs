@@ -946,7 +946,7 @@ type MDOps interface {
 	// branch, and also deletes any blocks in `blocksToDelete` that
 	// are still in the local journal.  It also appends the given MD
 	// to the journal.
-	ResolveBranch(ctx context.Context, id TlfID, bid BranchID,
+	ResolveBranch(ctx context.Context, id tlf.ID, bid BranchID,
 		blocksToDelete []BlockID, rmd *RootMetadata) (MdID, error)
 
 	// GetLatestHandleForTLF returns the server's idea of the latest handle for the TLF,

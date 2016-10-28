@@ -369,7 +369,7 @@ func (j journalMDOps) PruneBranch(
 }
 
 func (j journalMDOps) ResolveBranch(
-	ctx context.Context, id TlfID, bid BranchID,
+	ctx context.Context, id tlf.ID, bid BranchID,
 	blocksToDelete []BlockID, rmd *RootMetadata) (MdID, error) {
 	if tlfJournal, ok := j.jServer.getTLFJournal(id); ok {
 		mdID, err := tlfJournal.resolveBranch(

@@ -210,7 +210,7 @@ func makeMDJournalWithIDJournal(
 
 func makeMDJournal(
 	uid keybase1.UID, key kbfscrypto.VerifyingKey, codec kbfscodec.Codec,
-	crypto cryptoPure, clock Clock, tlfID TlfID,
+	crypto cryptoPure, clock Clock, tlfID tlf.ID,
 	mdVer MetadataVer, dir string,
 	log logger.Logger) (*mdJournal, error) {
 	journalDir := filepath.Join(dir, "md_journal")

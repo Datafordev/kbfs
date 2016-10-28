@@ -2534,7 +2534,7 @@ func (_mr *_MockMDOpsRecorder) PruneBranch(arg0, arg1, arg2 interface{}) *gomock
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "PruneBranch", arg0, arg1, arg2)
 }
 
-func (_m *MockMDOps) ResolveBranch(ctx context.Context, id TlfID, bid BranchID, blocksToDelete []BlockID, rmd *RootMetadata) (MdID, error) {
+func (_m *MockMDOps) ResolveBranch(ctx context.Context, id tlf.ID, bid BranchID, blocksToDelete []BlockID, rmd *RootMetadata) (MdID, error) {
 	ret := _m.ctrl.Call(_m, "ResolveBranch", ctx, id, bid, blocksToDelete, rmd)
 	ret0, _ := ret[0].(MdID)
 	ret1, _ := ret[1].(error)
