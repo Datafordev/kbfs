@@ -353,6 +353,20 @@ const (
 // enqueued journal ID tag.
 const CtxJournalOpID = "JID"
 
+func (j *tlfJournal) isOnConflictBranchLocked() (bool, error) {
+	if err := j.checkEnabledLocked(); err != nil {
+		return false, err
+	}
+
+	return j.mdJournal.getBranchID() != NullBranchID, nil
+}
+
+func (j *tlfJournal) isOnConflictBranch() (bool, error) {
+	j.journalLock.RLock()
+	defer j.journalLock.RUnlock()
+	return j.isOnConflictBranchLocked()
+}
+
 // doBackgroundWorkLoop is the main function for the background
 // goroutine. It spawns off a worker goroutine to call
 // doBackgroundWork whenever there is work, and can be paused and
@@ -878,20 +892,6 @@ func (j *tlfJournal) getJournalEntryCounts() (
 	}
 
 	return blockEntryCount, mdEntryCount, nil
-}
-
-func (j *tlfJournal) isOnConflictBranchLocked() (bool, error) {
-	if err := j.checkEnabledLocked(); err != nil {
-		return false, err
-	}
-
-	return j.mdJournal.getBranchID() != NullBranchID, nil
-}
-
-func (j *tlfJournal) isOnConflictBranch() (bool, error) {
-	j.journalLock.RLock()
-	defer j.journalLock.RUnlock()
-	return j.isOnConflictBranchLocked()
 }
 
 func (j *tlfJournal) getJournalStatusLocked() (TLFJournalStatus, error) {

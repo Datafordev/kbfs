@@ -3210,7 +3210,10 @@ func (cr *ConflictResolver) syncBlocks(ctx context.Context, lState *lockState,
 	// do the block changes need their own blocks?
 	bsplit := cr.config.BlockSplitter()
 	if !bsplit.ShouldEmbedBlockChanges(&md.data.Changes) {
-		// The child blocks should be referenced in the resolution op.
+		// The block change pointers should be referenced in a final
+		// resolution op, so future resolutions involving this
+		// resolution don't try to include them in their bookkeeping
+		// calculations.
 		_, ok := md.data.Changes.Ops[len(md.data.Changes.Ops)-1].(*resolutionOp)
 		if !ok {
 			md.AddOp(newResolutionOp())

@@ -604,9 +604,9 @@ func (md *MDOpsStandard) ResolveBranch(
 		return MdID{}, err
 	}
 
-	// Prune the branch ia the journal, if there is one.  If the
-	// client fails before this is completed, we'll need to check for
-	// resolutions on the next restart (see KBFS-798).
+	// Prune the branch from the server.  If the client fails before
+	// this is completed, we'll need to check for resolutions on the
+	// next restart (see KBFS-798).
 	err = md.PruneBranch(ctx, id, bid)
 	if err != nil {
 		return MdID{}, err

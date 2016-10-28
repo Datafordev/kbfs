@@ -200,8 +200,8 @@ func (j journalMDOps) GetForHandle(
 	// optimize this, since all subsequent lookups will be by
 	// TLF. Although if we did want to, we could store a handle -> TLF
 	// ID mapping with the journals.  If we are looking for an
-	// unmerged head, that exists only in the journal, so check the
-	// remote server only to get the TLF ID.
+	// unmerged head, it will exist only in the journal, so check the
+	// merged head of the remote server in order to get the TLF ID.
 	remoteMStatus := mStatus
 	if mStatus == Unmerged {
 		remoteMStatus = Merged

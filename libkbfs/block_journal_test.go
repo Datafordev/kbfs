@@ -265,7 +265,8 @@ func TestBlockJournalArchiveNonExistentReference(t *testing.T) {
 func testBlockJournalGCd(t *testing.T, j *blockJournal) {
 	filepath.Walk(j.dir,
 		func(path string, info os.FileInfo, _ error) error {
-			// We should only find the blocks directory here.
+			// We should only find the root directory, the ID journal,
+			// and the blocks directory here, with no other files.
 			if path != j.dir && path != j.blocksPath() && path != j.j.dir {
 				t.Errorf("Found unexpected block path: %s", path)
 			}

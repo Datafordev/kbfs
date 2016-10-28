@@ -74,6 +74,14 @@ type blockJournal struct {
 	j    diskJournal
 	refs map[BlockID]blockRefMap
 
+	// If non-nil, this contains block entries for blocks that we want
+	// to keep around until the next MD flush.  We keep them around
+	// just in case the MD flush fails and the MD journal is converted
+	// to a branch; that way during branch resolution the blocks will
+	// be locally available even after a restart.  Note that we keep
+	// it within the blockJournal, rather than in a separate block
+	// journal at the tlfJournal level, because we need to track the
+	// references correctly.
 	saveUntilMDFlush *diskJournal
 
 	// Tracks the total size of on-disk blocks that will be flushed to
@@ -1204,7 +1212,6 @@ func (j *blockJournal) onMDFlush() error {
 			return errors.New("Unexpected block journal entry type in saved")
 		}
 
-		j.log.CDebugf(nil, "Removing data for entry %d", i)
 		err = j.removeFlushedEntryFromDisk(i, entry, true, *j.saveUntilMDFlush)
 		if err != nil {
 			return err
