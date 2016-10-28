@@ -516,6 +516,8 @@ func (fbo *folderBranchOps) setBranchIDLocked(lState *lockState, bid BranchID) {
 }
 
 var errNoFlushedRevisions = errors.New("No flushed MDs yet")
+var errNoJournalPredWhileStaged = errors.New(
+	"Cannot find most recent merged revision while staged")
 
 // getJournalPredecessorRevision returns the revision that precedes
 // the current journal head if journaling enabled and there are
@@ -541,8 +543,7 @@ func (fbo *folderBranchOps) getJournalPredecessorRevision(ctx context.Context) (
 	}
 
 	if jStatus.BranchID != NullBranchID.String() {
-		return MetadataRevisionUninitialized,
-			errors.New("Cannot find most recent merged revision while staged")
+		return MetadataRevisionUninitialized, errNoJournalPredWhileStaged
 	}
 
 	if jStatus.RevisionStart == MetadataRevisionUninitialized {
@@ -4523,14 +4524,25 @@ func (fbo *folderBranchOps) SyncFromServerForTesting(
 		return err
 	}
 
-	if err := fbo.getAndApplyMDUpdates(ctx, lState, fbo.applyMDUpdates); err != nil {
-		if applyErr, ok := err.(MDRevisionMismatch); ok {
-			if applyErr.rev == applyErr.curr {
-				fbo.log.CDebugf(ctx, "Already up-to-date with server")
-				return nil
+	for {
+		if err := fbo.getAndApplyMDUpdates(
+			ctx, lState, fbo.applyMDUpdates); err != nil {
+			if applyErr, ok := err.(MDRevisionMismatch); ok {
+				if applyErr.rev == applyErr.curr {
+					fbo.log.CDebugf(ctx, "Already up-to-date with server")
+					return nil
+				}
+			} else if err != errNoJournalPredWhileStaged {
+				return err
 			}
+
+			// Staged, wait for CR
+			if err := fbo.cr.Wait(ctx); err != nil {
+				return err
+			}
+		} else {
+			break
 		}
-		return err
 	}
 
 	// Wait for all the asynchronous block archiving and quota
