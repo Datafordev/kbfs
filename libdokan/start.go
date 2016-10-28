@@ -70,6 +70,7 @@ func Start(mounter Mounter, options StartOptions, kbCtx libkbfs.Context) *libfs.
 		if err != nil {
 			return libfs.InitError(err.Error())
 		}
+		log.CInfof(ctx, "Got mount dir from service: %s", options.DokanConfig.Path)
 	}
 
 	if newFolderNameErr != nil {
