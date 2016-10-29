@@ -679,16 +679,14 @@ func (so *syncOp) checkConflict(renamer ConflictRenamer, mergedOp op,
 		// type-specific intelligent conflict resolvers for file
 		// contents?)
 		toName := renamer.ConflictRename(so, mergedOp.getFinalPath().tailName())
-		unmergedParentMostRecent := so.getFinalPath().parentPath().tailPointer()
 		if so.keepUnmergedTailName {
 			toName = so.getFinalPath().tailName()
-			unmergedParentMostRecent = BlockPointer{}
 		}
 
 		return &renameUnmergedAction{
 			fromName: so.getFinalPath().tailName(),
 			toName:   toName,
-			unmergedParentMostRecent: unmergedParentMostRecent,
+			unmergedParentMostRecent: so.getFinalPath().parentPath().tailPointer(),
 			mergedParentMostRecent: mergedOp.getFinalPath().parentPath().
 				tailPointer(),
 		}, nil
